@@ -1,4 +1,4 @@
-import { ReactFlow } from '@xyflow/react';
+import { Background, ReactFlow } from '@xyflow/react';
 import React, { useState } from 'react'
 import '@xyflow/react/dist/style.css';
 
@@ -34,7 +34,9 @@ const Flow = () => {
     const [nodes, setNodes] = useState(initialNodes);
     const [edges, setEdges] = useState(initialEdges);
   return (
-    <ReactFlow nodes={nodes} edges={edges} fitView/>
+    <ReactFlow nodes={nodes} edges={edges} fitView>
+        <Background/>
+    </ReactFlow>
   )
 }
 
