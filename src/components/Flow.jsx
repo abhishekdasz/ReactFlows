@@ -1,5 +1,5 @@
-import { Background, ReactFlow } from '@xyflow/react';
-import React, { useState } from 'react'
+import { addEdge, applyEdgeChanges, applyNodeChanges, Background, Controls, ReactFlow } from '@xyflow/react';
+import React, { useCallback, useState } from 'react'
 import '@xyflow/react/dist/style.css';
 
 const initialNodes = [
@@ -21,6 +21,7 @@ const initialNodes = [
     },
         {
         id: '4',
+        type: 'output',
         position: {x:200, y:325},
         data: {label:"node4"}
     },
@@ -33,9 +34,30 @@ const initialEdges = [
 const Flow = () => {
     const [nodes, setNodes] = useState(initialNodes);
     const [edges, setEdges] = useState(initialEdges);
+
+  const onNodesChange = useCallback(
+    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+    [setNodes],
+  );
+  const onEdgesChange = useCallback(
+    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+    [setEdges],
+  );
+  const onConnect = useCallback(
+    (connection) => setEdges((eds) => addEdge(connection, eds)),
+    [setEdges],
+  );
   return (
-    <ReactFlow nodes={nodes} edges={edges} fitView>
+    <ReactFlow 
+        nodes={nodes} 
+        edges={edges} 
+        fitView
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+    >
         <Background/>
+        <Controls />
     </ReactFlow>
   )
 }
